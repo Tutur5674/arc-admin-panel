@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARC — Portail Administrateur</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ══════════ LOGIN ══════════ -->
+<div id="login-screen">
+  <div class="grid-bg"></div>
+
+  <div class="login-header">
+    <div class="arc-sigil"><span>ARC</span></div>
+    <div class="login-title">Portail administrateur</div>
+    <div class="login-sub">Accès restreint — personnel autorisé</div>
+  </div>
+
+  <div class="login-card">
+    <label class="field-label">Code d'accès</label>
+    <input class="code-input" type="password" id="code-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')tryLogin()" autocomplete="off" spellcheck="false">
+    <div class="code-hint">Entrez le code fourni par la direction ARC</div>
+    <button class="login-btn" onclick="tryLogin()">Accéder au portail</button>
+    <div class="err-msg" id="err-msg"></div>
+  </div>
+
+  <div class="login-footer">
+    Agence de Régulation Communautaire &nbsp;·&nbsp; Accès journalisé
+  </div>
+</div>
+
+<!-- ══════════ PORTAL ══════════ -->
+<div id="portal">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo">ARC</div>
+      <div class="topbar-sep"></div>
+      <div class="topbar-label">Portail administrateur</div>
+    </div>
+    <div class="topbar-right">
+      <div class="live-badge">
+        <div class="live-dot"></div>
+        <span>En ligne</span>
+      </div>
+      <button class="logout-btn" onclick="logout()">Se déconnecter</button>
+    </div>
+  </div>
+
+  <div class="nav">
+    <button class="nav-btn active" onclick="showSection('dashboard',this)">Tableau de bord</button>
+    <button class="nav-btn" onclick="showSection('reglement',this)">Règlement</button>
+    <button class="nav-btn" onclick="showSection('roles',this)">Rôles & hiérarchie</button>
+    <button class="nav-btn" onclick="showSection('blacklist',this)">Blacklist</button>
+    <button class="nav-btn" onclick="showSection('contacts',this)">Contacts staff</button>
+  </div>
+
+  <div class="content">
+
+    <!-- ── DASHBOARD ── -->
+    <div class="section active" id="dashboard">
+      <div class="section-header">
+        <div class="section-title">Tableau de bord</div>
+        <div class="section-desc">Vue d'ensemble de l'ARC — mise à jour manuelle</div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Membres staff</div>
+          <div class="stat-value accent">12</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Serveurs partenaires</div>
+          <div class="stat-value">8</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Audits réalisés</div>
+          <div class="stat-value green">23</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Entrées blacklist</div>
+          <div class="stat-value red">3</div>
+        </div>
+      </div>
+
+      <div class="dash-section-title">Annonces internes</div>
+      <div class="news-block">
+        <div class="news-item">
+          <span class="news-tag tag-alert">ALERTE</span>
+          <div class="news-text">Reconstruction du serveur ARC suite au nuking malveillant de janvier 2025. Toutes les données ont été restaurées.</div>
+          <div class="news-date">Jan. 2025</div>
+        </div>
+        <div class="news-item">
+          <span class="news-tag tag-warn">INFO</span>
+          <div class="news-text">Mise à jour du règlement intérieur — 17 articles désormais en vigueur. Relecture obligatoire pour tout le staff.</div>
+          <div class="news-date">Fév. 2025</div>
+        </div>
+        <div class="news-item">
+          <span class="news-tag tag-info">NEWS</span>
+          <div class="news-text">Nouveau partenariat en cours de négociation. Décision finale lors de la prochaine réunion de direction.</div>
+          <div class="news-date">Avr. 2025</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── RÈGLEMENT ── -->
+    <div class="section" id="reglement">
+      <div class="section-header">
+        <div class="section-title">Règlement intérieur ARC</div>
+        <div class="section-desc">17 articles — applicable à tous les membres du staff et serveurs partenaires</div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-header">
+          <span class="rule-num">ART. 01</span>
+          <span class="rule-cat">Conduite générale</span>
+        </div>
+        <div class="rule-text">Tout membre du staff ARC doit faire preuve de professionnalisme en toute circonstance, y compris en dehors des serveurs partenaires.</div>
+        <div class="rule-sanction">⚠ Sanction : avertissement → suspension temporaire</div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-header">
+          <span class="rule-num">ART. 02</span>
+          <span class="rule-cat">Confidentialité</span>
+        </div>
+        <div class="rule-text">Il est interdit de divulguer des informations confidentielles relatives aux audits, partenariats ou décisions internes de l'ARC.</div>
+        <div class="rule-sanction">⚠ Sanction : exclusion immédiate</div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-header">
+          <span class="rule-num">ART. 03</span>
+          <span class="rule-cat">Modération</span>
+        </div>
+        <div class="rule-text">Toute décision de modération doit être justifiée et documentée. Aucune sanction arbitraire n'est tolérée.</div>
+        <div class="rule-sanction">⚠ Sanction : révision obligatoire + avertissement</div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-header">
+          <span class="rule-num">ART. 04</span>
+          <span class="rule-cat">Conflits d'intérêt</span>
+        </div>
+        <div class="rule-text">Le staff ARC ne peut pas utiliser son statut pour obtenir des avantages personnels auprès des serveurs partenaires.</div>
+        <div class="rule-sanction">⚠ Sanction : suspension → exclusion selon gravité</div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-header">
+          <span class="rule-num">ART. 05</span>
+          <span class="rule-cat">Conflits d'intérêt</span>
+        </div>
+        <div class="rule-text">Tout conflit d'intérêt doit être déclaré à la direction avant toute intervention sur le serveur concerné.</div>
+        <div class="rule-sanction">⚠ Sanction : avertissement formel</div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-header">
+          <span class="rule-num">ART. 06</span>
+          <span class="rule-cat">Partenariats</span>
+        </div>
+        <div class="rule-text">Toute demande de partenariat doit passer par la procédure officielle. Aucun accord informel ne peut engager l'ARC.</div>
+        <div class="rule-sanction">⚠ Sanction : nullité de l'accord + avertissement</div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-header">
+          <span class="rule-num">ART. 07</span>
+          <span class="rule-cat">Respect</span>
+        </div>
+        <div class="rule-text">Tout membre du staff doit respecter les membres des serveurs partenaires, quel que soit le contexte ou la situation.</div>
+        <div class="rule-sanction">⚠ Sanction : avertissement → exclusion selon gravité</div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-header">
+          <span class="rule-num">ART. 08</span>
+          <span class="rule-cat">Activité</span>
+        </div>
+        <div class="rule-text">Un minimum d'activité est requis pour maintenir son poste au sein de l'ARC. Toute absence prolongée doit être justifiée à la direction.</div>
+        <div class="rule-sanction">⚠ Sanction : rétrogradation → exclusion</div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-header">
+          <span class="rule-num">ART. 09</span>
+          <span class="rule-cat">Recrutement</span>
+        </div>
+        <div class="rule-text">Aucun membre ne peut recruter au nom de l'ARC sans autorisation explicite de la direction.</div>
+        <div class="rule-sanction">⚠ Sanction : avertissement + nullité du recrutement</div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-header">
+          <span class="rule-num">ART. 10</span>
+          <span class="rule-cat">Sanctions</span>
+        </div>
+        <div class="rule-text">Toute sanction prononcée doit être consignée dans le registre interne. Les sanctions non documentées sont invalides.</div>
+        <div class="rule-sanction">⚠ Sanction : annulation de la sanction concernée</div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-header">
+          <span class="rule-num">ART. 11</span>
+          <span class="rule-cat">Image</span>
+        </div>
+        <div class="rule-text">Il est interdit de ternir l'image de l'ARC publiquement, que ce soit par des propos, des actions ou des publications.</div>
+        <div class="rule-sanction">⚠ Sanction : suspension → exclusion + blacklist</div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-header">
+          <span class="rule-num">ART. 12</span>
+          <span class="rule-cat">Sécurité</span>
+        </div>
+        <div class="rule-text">Tout incident de sécurité (tentative de nuking, usurpation, compromission) doit être signalé immédiatement à la direction.</div>
+        <div class="rule-sanction">⚠ Sanction en cas de non-signalement : avertissement grave</div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-header">
+          <span class="rule-num">ART. 13</span>
+          <span class="rule-cat">Audits</span>
+        </div>
+        <div class="rule-text">Les audits doivent être conduits de manière objective et impartiale. Tout favoritisme est strictement interdit.</div>
+        <div class="rule-sanction">⚠ Sanction : invalidation de l'audit + suspension</div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-header">
+          <span class="rule-num">ART. 14</span>
+          <span class="rule-cat">Hiérarchie</span>
+        </div>
+        <div class="rule-text">Les décisions de la direction sont finales. Tout désaccord doit être exprimé par voie interne, jamais publiquement.</div>
+        <div class="rule-sanction">⚠ Sanction : avertissement → suspension</div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-header">
+          <span class="rule-num">ART. 15</span>
+          <span class="rule-cat">Données</span>
+        </div>
+        <div class="rule-text">Les données des serveurs partenaires collectées lors des audits sont confidentielles et ne peuvent être partagées en dehors de l'ARC.</div>
+        <div class="rule-sanction">⚠ Sanction : exclusion immédiate + blacklist</div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-header">
+          <span class="rule-num">ART. 16</span>
+          <span class="rule-cat">Rupture</span>
+        </div>
+        <div class="rule-text">En cas de fin de partenariat, le staff ARC doit se retirer de tous les serveurs concernés dans les 48 heures suivant la décision.</div>
+        <div class="rule-sanction">⚠ Sanction : avertissement + signalement</div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-header">
+          <span class="rule-num">ART. 17</span>
+          <span class="rule-cat">Modification</span>
+        </div>
+        <div class="rule-text">Le présent règlement peut être modifié à tout moment par la direction. Toute modification est communiquée à l'ensemble du staff dans les 24 heures.</div>
+        <div class="rule-sanction">⚠ Information obligatoire — pas de sanction directe</div>
+      </div>
+    </div>
+
+    <!-- ── RÔLES ── -->
+    <div class="section" id="roles">
+      <div class="section-header">
+        <div class="section-title">Rôles & hiérarchie</div>
+        <div class="section-desc">14 rôles — du Fondateur aux membres externes</div>
+      </div>
+
+      <div class="roles-table">
+        <div class="roles-table-header">
+          <span>Rôle</span>
+          <span>Description</span>
+          <span>Responsabilités</span>
+          <span>Permissions</span>
+        </div>
+        <div class="role-row">
+          <div><span class="role-badge" style="background:#1a1000;color:#c8860a">Fondateur</span></div>
+          <div class="role-name">Direction générale</div>
+          <div class="role-desc">Toutes décisions ARC</div>
+          <div class="role-perm">TOTAL</div>
+        </div>
+        <div class="role-row">
+          <div><span class="role-badge" style="background:#0d1a2a;color:#378add">Co-Fondateur</span></div>
+          <div class="role-name">Direction adjointe</div>
+          <div class="role-desc">Seconde le fondateur</div>
+          <div class="role-perm">QUASI-TOTAL</div>
+        </div>
+        <div class="role-row">
+          <div><span class="role-badge" style="background:#1a0d1a;color:#9f7ac8">Administrateur</span></div>
+          <div class="role-name">Gestion interne</div>
+          <div class="role-desc">Décisions opérationnelles</div>
+          <div class="role-perm">ADMIN</div>
+        </div>
+        <div class="role-row">
+          <div><span class="role-badge" style="background:#0d1a0d;color:#3b9e55">Responsable</span></div>
+          <div class="role-name">Supervision équipes</div>
+          <div class="role-desc">Coordination staff</div>
+          <div class="role-perm">SENIOR</div>
+        </div>
+        <div class="role-row">
+          <div><span class="role-badge" style="background:#1a0a00;color:#c0592b">Auditeur senior</span></div>
+          <div class="role-name">Audits prioritaires</div>
+          <div class="role-desc">Partenariats complexes</div>
+          <div class="role-perm">STAFF+</div>
+        </div>
+        <div class="role-row">
+          <div><span class="role-badge" style="background:#141414;color:#888">Auditeur</span></div>
+          <div class="role-name">Audits standards</div>
+          <div class="role-desc">Évaluation serveurs</div>
+          <div class="role-perm">STAFF</div>
+        </div>
+        <div class="role-row">
+          <div><span class="role-badge" style="background:#141414;color:#666">Modérateur partenaire</span></div>
+          <div class="role-name">Modération externe</div>
+          <div class="role-desc">Serveurs liés uniquement</div>
+          <div class="role-perm">LIMITÉ</div>
+        </div>
+        <div class="role-row">
+          <div><span class="role-badge" style="background:#141414;color:#555">Stagiaire</span></div>
+          <div class="role-name">En formation</div>
+          <div class="role-desc">Observation & apprentissage</div>
+          <div class="role-perm">OBSERVATEUR</div>
+        </div>
+        <div class="role-row">
+          <div><span class="role-badge" style="background:#0d1a1a;color:#2a9d8f">Partenaire</span></div>
+          <div class="role-name">Serveur allié</div>
+          <div class="role-desc">Accord de partenariat actif</div>
+          <div class="role-perm">EXTERNE</div>
+        </div>
+        <div class="role-row">
+          <div><span class="role-badge" style="background:#141414;color:#555">Membre</span></div>
+          <div class="role-name">Membre standard</div>
+          <div class="role-desc">Accès général</div>
+          <div class="role-perm">BASIQUE</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── BLACKLIST ── -->
+    <div class="section" id="blacklist">
+      <div class="section-header">
+        <div class="section-title">Registre de blacklist</div>
+        <div class="section-desc">Personnes et serveurs bannis de tout partenariat ou collaboration avec l'ARC</div>
+      </div>
+
+      <div class="bl-table">
+        <div class="bl-header">
+          <span>ID</span>
+          <span>Identifiant</span>
+          <span>Discord</span>
+          <span>Motif</span>
+          <span>Date</span>
+        </div>
+        <div class="bl-row">
+          <div class="bl-id">#0001</div>
+          <div class="bl-status"><div class="status-dot"></div>Exemple</div>
+          <div class="bl-discord">Exemple#0000</div>
+          <div><span class="bl-reason-tag">Nuking malveillant</span></div>
+          <div class="bl-date">Jan. 2025</div>
+        </div>
+        <div class="bl-row">
+          <div class="bl-id">#0002</div>
+          <div class="bl-status"><div class="status-dot"></div>Utilisateur</div>
+          <div class="bl-discord">User#1234</div>
+          <div><span class="bl-reason-tag">Divulgation confidentielle</span></div>
+          <div class="bl-date">Fév. 2025</div>
+        </div>
+        <div class="bl-row">
+          <div class="bl-id">#0003</div>
+          <div class="bl-status"><div class="status-dot"></div>Exemple2</div>
+          <div class="bl-discord">Exemple2#5678</div>
+          <div><span class="bl-reason-tag">Usurpation de rôle</span></div>
+          <div class="bl-date">Mars 2025</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CONTACTS ── -->
+    <div class="section" id="contacts">
+      <div class="section-header">
+        <div class="section-title">Contacts staff</div>
+        <div class="section-desc">Membres actifs de l'équipe ARC — pseudos Discord officiels</div>
+      </div>
+
+      <div class="contacts-grid">
+        <div class="contact-card">
+          <div class="contact-header">
+            <div class="avatar" style="background:#1a1000;color:#c8860a">FD</div>
+            <div>
+              <div class="contact-name">TonPseudo</div>
+              <div><span class="contact-role-badge" style="background:#1a1000;color:#c8860a">Fondateur</span></div>
+            </div>
+          </div>
+          <div class="contact-fields">
+            <div class="contact-field">
+              <span class="field-key">Discord</span>
+              <span class="field-val">TonPseudo#0000</span>
+            </div>
+            <div class="contact-field">
+              <span class="field-key">Statut</span>
+              <span class="field-val" style="color:#27ae60">Actif</span>
+            </div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-header">
+            <div class="avatar" style="background:#0d1a2a;color:#378add">CF</div>
+            <div>
+              <div class="contact-name">PseudoCo</div>
+              <div><span class="contact-role-badge" style="background:#0d1a2a;color:#378add">Co-Fondateur</span></div>
+            </div>
+          </div>
+          <div class="contact-fields">
+            <div class="contact-field">
+              <span class="field-key">Discord</span>
+              <span class="field-val">PseudoCo#0000</span>
+            </div>
+            <div class="contact-field">
+              <span class="field-key">Statut</span>
+              <span class="field-val" style="color:#27ae60">Actif</span>
+            </div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-header">
+            <div class="avatar" style="background:#1a0d1a;color:#9f7ac8">AD</div>
+            <div>
+              <div class="contact-name">PseudoAdmin</div>
+              <div><span class="contact-role-badge" style="background:#1a0d1a;color:#9f7ac8">Administrateur</span></div>
+            </div>
+          </div>
+          <div class="contact-fields">
+            <div class="contact-field">
+              <span class="field-key">Discord</span>
+              <span class="field-val">PseudoAdmin#0000</span>
+            </div>
+            <div class="contact-field">
+              <span class="field-key">Statut</span>
+              <span class="field-val" style="color:#27ae60">Actif</span>
+            </div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-header">
+            <div class="avatar" style="background:#0d1a0d;color:#3b9e55">RS</div>
+            <div>
+              <div class="contact-name">PseudoResp</div>
+              <div><span class="contact-role-badge" style="background:#0d1a0d;color:#3b9e55">Responsable</span></div>
+            </div>
+          </div>
+          <div class="contact-fields">
+            <div class="contact-field">
+              <span class="field-key">Discord</span>
+              <span class="field-val">PseudoResp#0000</span>
+            </div>
+            <div class="contact-field">
+              <span class="field-key">Statut</span>
+              <span class="field-val" style="color:#e8a020">Hors ligne</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
